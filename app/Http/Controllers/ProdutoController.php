@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\Produto;
+use DB;
 class ProdutoController extends Controller
 {
     /**
@@ -13,7 +14,11 @@ class ProdutoController extends Controller
      */
     public function index()
     {
-        //
+        {   
+            $Produtos = DB::select('select * from Produtos');
+             return view('Produto.index')->with('Produtos', $Produtos);
+         }
+     
     }
 
     /**

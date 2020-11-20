@@ -7,26 +7,30 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
     
     
-    <title>Index de Tipo Produto</title>
+    <title>Index de Produto</title>
 </head>
 <body>
    <div class="container">
-    <a href={{route('tipoproduto.create')}} class="btn btn-primary">Criar um Tipo de Produto</a>
+    <a href={{route('produto.create')}} class="btn btn-primary">Criar um Produto</a>
     <table class="table table-hover">
         <thead>
           <tr>
                 <th scope="col">ID</th>
-                <th scope="col">Descrição</th>
+                <th scope="col">Nome</th>
+                <th scope="col">Preço</th>
+                <th scope="col">Produtos</th>
                 <th scope="col">Ação</th>
           </tr>
         </thead>
         <tbody>
 
-          @foreach ($tipoProdutos as $tipoProduto)
+          @foreach ($Produtos as $Produto)
            <tr>
             
-            <th scope="row">{{$tipoProduto->id}}</th>
-            <td>{{$tipoProduto->descricao}}</td>
+            <th scope="row">{{$Produto->id}}</th>
+            <td>{{$Produto->nome}}</td>
+            <td>{{$Produto->preco}}</td>
+            <td>{{$Produto->Tipo_Produtos_id}}</td>
             <td>
                 <a href="#" class="btn btn-primary">show</a>
                 <a href="#" class="btn btn-info">Edit</a>
@@ -39,9 +43,6 @@
         </tbody>
       </table>
    </div>
-
-
-
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
