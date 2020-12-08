@@ -15,8 +15,8 @@ class TipoProdutoController extends Controller
      */
     public function index()
     {   
-       $TipoProdutos = DB::select('select * from Tipo_Produtos');
-        return view('TipoProduto.index')->with('tipoProdutos', $TipoProdutos);
+       $tipoProdutos = DB::select('select * from Tipo_Produtos');
+        return view('TipoProduto.index')->with('tipoProdutos', $tipoProdutos);
     }
 
     /**
@@ -40,7 +40,9 @@ class TipoProdutoController extends Controller
         $TipoProduto = new TipoProduto();
         $TipoProduto->descricao = $request->descricao;
         $TipoProduto->save();
-        return view('TipoProduto.create'); 
+       
+        return $this->index(); 
+
     }
 
     /**
@@ -51,7 +53,10 @@ class TipoProdutoController extends Controller
      */
     public function show($id)
     {
-        //
+        $tipoProduto = TipoProduto::find($id);
+        if(isset($tipoProduto))
+        return view('TipoProduto.show')->with('tipoProduto', $tipoProduto);
+        return 'Não encontrado';
     }
 
     /**
@@ -62,7 +67,10 @@ class TipoProdutoController extends Controller
      */
     public function edit($id)
     {
-        //
+        $tipoProduto = TipoProduto::find($id);
+        if(isset($tipoProduto))
+        return view('TipoProduto.edit')->with('tipoProduto', $tipoProduto);
+        return 'Não encontrado';
     }
 
     /**
@@ -74,7 +82,16 @@ class TipoProdutoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $tipoProduto = TipoProduto::find($id);
+        if(isset($tipoProduto))
+         {
+            $tipoProduto->descricao = $request->descricao;
+            $tipoProduto->update();
+            return $this->index();
+
+         }
+        return 'Não encontrado';
+    
     }
 
     /**
@@ -85,6 +102,13 @@ class TipoProdutoController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $tipoProduto = TipoProduto::find($id);
+        if(isset($tipoProduto))
+        {
+            $tipoProduto->delete();
+            return $this->index();
+        }
+        return 'Não encontrado';
+
     }
 }

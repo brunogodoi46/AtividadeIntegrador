@@ -25,4 +25,3 @@ Route::resource('tipoproduto', 'TipoProdutoController');
 //Route::post('tipoproduto', 'TipoProdutoController@store')->name('tipoproduto.store');;
 
 Route::resource('produto', 'ProdutoController');
-Route::resource('produto', 'ProdutoController');

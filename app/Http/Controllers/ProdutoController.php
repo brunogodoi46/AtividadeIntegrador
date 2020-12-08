@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use DB;
 use App\Produto;
+use App\TipoProduto;
+
 class ProdutoController extends Controller
 {
     /**
@@ -15,8 +17,9 @@ class ProdutoController extends Controller
     public function index()
     {
         {   
-            $Produtos = DB::select('select * from Produtos');
-             return view('Produto.index')->with('Produtos', $Produtos);
+            $Produtos = DB::select("select Produtos.id, Produtos.nome, Produtos.preco, Tipo_Produtos.descricao from Produtos join Tipo_Produtos on Produtos.Tipo_Produtos_id = Tipo_Produtos.id");
+             
+            return view('Produto.index')->with('Produtos', $Produtos);
          }
      
     }
@@ -46,8 +49,8 @@ class ProdutoController extends Controller
         $Produto->Tipo_Produtos_id = $request->Tipo_Produtos_id;
         $Produto->save();
         
-        $Produtos = DB::select('select * from Produtos');
-        return view('Produto.index')->with('Produtos', $Produtos); 
+       
+        return $this->index(); 
     
     }
 
@@ -59,7 +62,14 @@ class ProdutoController extends Controller
      */
     public function show($id)
     {
-        //
+        $produto = Produto::find($id);
+        if(isset($produto))
+        {     
+        $tipoProduto = TipoProduto::find($produto->Tipo_Produtos_id);
+        return view('Produto.show')->with('produto', $produto)->with('tipoProduto', $tipoProduto);
+         }
+        
+        return 'Não encontrado';
     }
 
     /**
@@ -69,8 +79,13 @@ class ProdutoController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
-    {
-        //
+    {   $produto = Produto::find($id);
+        if(isset($produto))
+        {
+        $tipoProdutos = DB::select('select * from Tipo_Produtos');
+        return view('Produto.edit')->with('produto', $produto)->with('tipoProdutos', $tipoProdutos);
+        }
+        return 'Não encontrado';
     }
 
     /**
@@ -82,7 +97,19 @@ class ProdutoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $produto = Produto::find($id);
+        if(isset($produto))
+        {
+        $produto->nome = $request->nome;
+        $produto->preco = $request->preco;
+        $produto->Tipo_Produtos_id = $request->Tipo_Produtos_id;
+        $produto->update();
+        $produto->save();
+        return $this->index(); 
+        }
+       
+       
+        return 'Não encontrado';
     }
 
     /**

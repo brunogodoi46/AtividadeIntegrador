@@ -30,10 +30,10 @@
             <th scope="row">{{$Produto->id}}</th>
             <td>{{$Produto->nome}}</td>
             <td>{{$Produto->preco}}</td>
-            <td>{{$Produto->Tipo_Produtos_id}}</td>
+            <td>{{$Produto->descricao}}</td>
             <td>
-                <a href="#" class="btn btn-primary">show</a>
-                <a href="#" class="btn btn-info">Edit</a>
+                <a href={{route('produto.show', $Produto->id)}} class="btn btn-primary">show</a>
+                <a href={{route('produto.edit', $Produto->id)}} class="btn btn-info">Edit</a>
                 <a href="#" class="btn btn-danger">Remover</a>
             </td>
            
