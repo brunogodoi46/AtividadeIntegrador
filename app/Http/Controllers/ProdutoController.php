@@ -24,8 +24,10 @@ class ProdutoController extends Controller
     }
     private function indexMessage($message)
     {
-        {   
-            $Produtos = DB::select("select Produtos.id, Produtos.nome, Produtos.preco, Tipo_Produtos.descricao from Produtos join Tipo_Produtos on Produtos.Tipo_Produtos_id = Tipo_Produtos.id");
+    {      //Buscar os dados que estão na tabela Proddutos
+
+            $Produtos = DB::select("select Produtos.id, Produtos.nome, Produtos.preco,
+             Tipo_Produtos.descricao from Produtos join Tipo_Produtos on Produtos.Tipo_Produtos_id = Tipo_Produtos.id");
              
             return view('Produto.index')->with('Produtos', $Produtos)->with('message', $message);
          }
