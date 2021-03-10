@@ -10,20 +10,20 @@
 </head>
 <body>
 <div class="container">
-    <form method="POST" action={{route("produto.update", $produto->id)}}>
+    <form method="POST" action={{route("Endereco.update")}}>
         @csrf
             <input name="_method" type="hidden" value="PUT">
         <div class="form-group">
-            <label for="input-ID">ID</label>
-            <input type="text" class="form-control" id="input-ID" value={{$produto->id}} disabled>
+            <label for="input-ID">id</label>
+            <input type="text" class="form-control" id="input-ID" value={{$Endereco->id}} disabled>
         </div>
         <div class="form-group">
-            <label for="input-nome">Nome</label>
-            <input name="nome" type="text" class="form-control" id="input-nome" placeholder="Informe o nome do recurso" value={{$produto->nome}} >
+            <label for="input-bairro">bairro</label>
+            <input name="bairro" type="text" class="form-control" id="input-bairro" placeholder="Informe o nome do recurso" value={{$Endereco->bairro}} >
         </div>
         <div class="form-group">
             <label for="input-preco">Preço</label>
-            <input name="preco" type="text" class="form-control" id="input-preco" placeholder="Informe o preço do recurso" value={{$produto->preco}} >
+            <input name="preco" type="text" class="form-control" id="input-preco" placeholder="Informe o preço do recurso" value={{$Endereco->logradouro}} >
         </div>
         <div class="form-group">
             <label for="input-tipo-produto">Tipo de Produto</label>

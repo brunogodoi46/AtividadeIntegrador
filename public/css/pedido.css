@@ -1,6 +1,7 @@
-#list-pedido {
+#list-pedidos {
     height: 310px;
     overflow-y: scroll;
+    
 }
 
 #list-produtos {

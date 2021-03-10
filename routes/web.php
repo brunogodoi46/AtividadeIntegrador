@@ -23,4 +23,13 @@ Route::get('/', function () {
 Route::resource('tipoproduto', 'TipoProdutoController');
 Route::resource('produto', 'ProdutoController');
 
-Route::get('pedido', 'PedidoController@index')->name('pedido.index');
+//Rotas para o controlador Pedido.
+Route::get('/pedido', 'PedidoController@index')->name('pedido.index');
+Route::post('/pedido/{endereco_id}', 'PedidoController@store')->name('pedido.store');
+
+//Rotas para o controlador PedidoProduto.
+Route::get('/pedidoproduto/getTodosProdutosDeTipo/{produto_id}', 'PedidoProdutoController@getTodosProdutosDeTipo')->name('pedidoproduto.getTodosProdutosDeTipo');
+
+//Rota para o controlador Endereco.
+
+Route::resource('/endereco', 'EnderecoController');

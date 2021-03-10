@@ -24,9 +24,9 @@ class ProdutoController extends Controller
     }
     private function indexMessage($message)
     {
-    {      //Buscar os dados que estão na tabela Proddutos
+    {      //Buscar os dados que estão na tabela Produtos
 
-            $Produtos = DB::select("select Produtos.id, Produtos.nome, Produtos.preco,
+            $Produtos = DB::select("SELECT Produtos.id, Produtos.nome, Produtos.preco,
              Tipo_Produtos.descricao from Produtos join Tipo_Produtos on Produtos.Tipo_Produtos_id = Tipo_Produtos.id");
              
             return view('Produto.index')->with('Produtos', $Produtos)->with('message', $message);
@@ -41,7 +41,7 @@ class ProdutoController extends Controller
      */
     public function create()
     {
-        $tipoProdutos = DB::select('select * from Tipo_Produtos');
+        $tipoProdutos = DB::select('SELECT * from Tipo_Produtos');
         return view('Produto.create')->with('tipoProdutos', $tipoProdutos);
     }
 
@@ -102,7 +102,7 @@ class ProdutoController extends Controller
     {   $produto = Produto::find($id);
         if(isset($produto))
         {
-        $tipoProdutos = DB::select('select * from Tipo_Produtos');
+        $tipoProdutos = DB::select('SELECT * from Tipo_Produtos');
         return view('Produto.edit')->with('produto', $produto)->with('tipoProdutos', $tipoProdutos);
         }
         $message['type'] = 'danger';

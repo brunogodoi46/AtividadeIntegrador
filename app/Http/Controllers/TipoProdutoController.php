@@ -25,7 +25,7 @@ class TipoProdutoController extends Controller
      */
     private function indexMessage($message)
     {   
-       $tipoProdutos = DB::select('select * from Tipo_Produtos');
+       $tipoProdutos = DB::select('SELECT * from Tipo_Produtos');
         return view('TipoProduto.index')->with('tipoProdutos', $tipoProdutos)->with('message', $message);
     }
 
