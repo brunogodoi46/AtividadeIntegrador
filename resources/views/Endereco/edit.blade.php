@@ -8,51 +8,47 @@
    
 {{-- comentar--}}
 
-    <title>Create de Produto</title>
+    <title>Edit de Produto</title>
 </head>
 <body>
 <div class="container">
-   <form method="POST" action={{Route('endereco.store')}}>
+   <form method="POST" action={{Route('endereco.update', $endereco->id)}}>
       @csrf
+     <input name="_method" type="hidden" value="PUT">
         <div class="form-group">
           <label for="input-ID">ID</label>
-          <input type="text" class="form-control" id="input-ID" aria-describedby="ID-help" value="#" disabled>
-          <small id="ID-help" class="form-text text-muted">Não é necesário formar um ID para cadastrar um novo recursos</small>
+          <input type="text" class="form-control" id="input-ID" value={{$endereco->id}} disabled>
         </div>
 
         <div class="form-group">
           <label for="Input-bairro">Bairro</label>
-          <input name="bairro" type="text" class="form-control" id="Input-bairro" aria-describedby="bairro-Help" placeholder="Informe o nome do bairro">
+          <input name="bairro" type="text" class="form-control" id="Input-bairro" aria-describedby="bairro-Help" placeholder="Informe o nome do bairro" value={{$endereco->bairro}}>
           <small id="bairro-Help" class="form-text text-muted"></small>
         </div>
       
         <div class="form-group">
           <label for="Input-rua">Nome da rua</label>
-          <input name="logradouro" type="text" class="form-control" id="Input-rua" aria-describedby="rua-Help" placeholder="Informe o nome da rua">
+          <input name="logradouro" type="text" class="form-control" id="Input-rua" aria-describedby="rua-Help" placeholder="Informe o nome da rua" value={{$endereco->logradouro}}>
           <small id="rua-Help" class="form-text text-muted"></small>
         </div>
 
         <div class="form-group">
           <label for="Input-id-casa">Numero da casa</label>
-          <input name="numero" type="text" class="form-control" id="Input-id-casa" aria-describedby="casa-id-Help" placeholder="Informe o numero da casa">
+          <input name="numero" type="text" class="form-control" id="Input-id-casa" aria-describedby="casa-id-Help" placeholder="Informe o numero da casa" value={{$endereco->numero}}>
           <small id="casa-id-Help" class="form-text text-muted"></small>
         </div>
 
         <div class="form-group">
           <label for="Input-comp">Complemento</label>
-          <input name="complemento" type="text" class="form-control" id="Input-comp" aria-describedby="comp-Help" placeholder="Informe o complemento">
+          <input name="complemento" type="text" class="form-control" id="Input-comp" aria-describedby="comp-Help" placeholder="Informe o complemento" value={{$endereco->complemento}}>
           <small id="comp-Help" class="form-text text-muted"></small>
         </div>
-
-         <div class="form-group">
-          @foreach ($enderecos as $endereco)
-          <input name="Users_id" class="form-control" id="input-Users-id" value={{$endereco->Users_id}}>  
-          @endforeach           
-         </div>
+        <div class="form-group">
+          <input name="Users_id" class="form-control" id="input-Users-id" value={{$endereco->Users_id}}>
+      </div>
 
       <button type="submit" class="btn btn-primary">Enviar</button>
       <a href={{route('endereco.index')}} class="btn btn-primary">Voltar</a>
-
     </form>
 </div>
 

@@ -18,9 +18,10 @@ class EnderecoController extends Controller
      */
     public function index()
     {
+        $user_id = 1;
         //Buscar os dados que estão na tabela Enderecos
-        $Enderecos = DB::select("SELECT enderecos.id, users.id, enderecos.bairro, enderecos.logradouro,
-        enderecos.numero,enderecos.complemento FROM enderecos  join users where enderecos.id = users.id");
+        $Enderecos = DB::select("SELECT enderecos.id,enderecos.bairro, enderecos.logradouro,
+        enderecos.numero,enderecos.complemento,enderecos.users_id FROM enderecos join users on enderecos.users_id = users.id where users_id = :user_id", ['user_id'=> $user_id]);
         return view('Endereco.index')->with('Enderecos', $Enderecos);
     }
 
@@ -31,9 +32,10 @@ class EnderecoController extends Controller
      */
     public function create()
     {
+        $user_id = 2;
     //Buscar os dados que estão na tabela Enderecos
-        $Enderecos = DB::select("SELECT * from enderecos");
-        return view('Endereco.create')->with('Enderecos', $Enderecos);
+        $enderecos = DB::select("SELECT * FROM enderecos join users on enderecos.users_id = users.id where users_id = :user_id", ['user_id'=> $user_id]);
+        return view('Endereco.create')->with('enderecos', $enderecos);
     }
 
     /**
@@ -53,9 +55,8 @@ class EnderecoController extends Controller
        $endereco->Users_id = $request->Users_id;
        $endereco->save();
 
-       //Buscar os dados que estão na tabela Enderecos
-        $Enderecos = DB::select("SELECT * from enderecos");
-        return view('Endereco.create')->with('Enderecos', $Enderecos);
+      //retornar a execução do método
+      return $this->index();
        
        
 
@@ -69,7 +70,14 @@ class EnderecoController extends Controller
      */
     public function show($id)
     {
-        //
+       // buscar dados da tabela Enderecos
+       $endereco = Endereco::find($id);
+    
+        return view('Endereco.show')->with('endereco', $endereco);
+
+       
+     //# TODO
+        return 'Não encontrado';
     }
 
     /**
@@ -80,7 +88,11 @@ class EnderecoController extends Controller
      */
     public function edit($id)
     {
-        //
+        $endereco = Endereco::find($id);
+        if(isset($endereco))
+         return view('Endereco.edit')->with('endereco', $endereco);
+      //# TODO
+         return 'Não encontrado';
     }
 
     /**
@@ -92,7 +104,22 @@ class EnderecoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $endereco = Endereco::find($id);
+        if(isset($endereco))
+        {
+            $endereco->bairro = $request->bairro;
+            $endereco->logradouro = $request->logradouro;
+            $endereco->numero = $request->numero;
+            $endereco->complemento = $request->complemento;
+            $endereco->Users_id = $request->Users_id;
+            $endereco->update();
+
+            //retornar a execução do método
+            return $this->index();
+                }
+         
+            //# TODO
+            return 'Não encontrado';
     }
 
     /**
@@ -103,6 +130,13 @@ class EnderecoController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $endereco = Endereco::find($id);
+        if(isset($endereco)){
+            $endereco->DELETE();
+            //retornar a execução do método
+            return $this->index();
+        }
+
+        return " Não encontrado";
     }
 }

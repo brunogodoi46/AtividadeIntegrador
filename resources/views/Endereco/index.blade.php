@@ -6,41 +6,87 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
    
-    <title>Show de Produto</title>
+    <title>index de Endereco</title>
 </head>
 <body>
-<div class="container">
-    <form method="POST" action={{route("Endereco.update")}}>
-        @csrf
-            <input name="_method" type="hidden" value="PUT">
-        <div class="form-group">
-            <label for="input-ID">id</label>
-            <input type="text" class="form-control" id="input-ID" value={{$Endereco->id}} disabled>
+    <div class="container">
+         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+         </button>
+       </div>
+        <a href={{route('endereco.create')}} class="btn btn-primary">Criar um Endereco</a>
+        <table class="table table-hover">
+            <thead>
+              <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">ID</th>
+                    <th scope="col">Bairro</th>
+                    <th scope="col">Rua</th>
+                    <th scope="col">Numero</th>
+                    <th scope="col">Complemento</th>
+                    <th scope="col">Ação</th>
+              </tr>
+            </thead>
+            <tbody>
+    
+              @foreach ($Enderecos as $Endereco)
+               <tr>
+                
+                <th scope="row">{{$Endereco->id}}</th>
+                <th scope="row">{{$Endereco->users_id}}</th>
+                <td>{{$Endereco->bairro}}</td>
+                <td>{{$Endereco->numero}}</td>
+                <td>{{$Endereco->logradouro}}</td>
+                <td>{{$Endereco->complemento}}</td>
+
+                <td>
+                    <a href={{route('endereco.show', $Endereco->id)}} class="btn btn-primary">show</a>
+                    <a href={{route('endereco.edit', $Endereco->id)}} class="btn btn-info">Edit</a>
+                    <a href="#" class="btn btn-danger destroyButton" data-toggle="modal" data-target="#destroyModal" value={{route('endereco.destroy', $Endereco->id)}}>Remover</a>
+                </td>
+               
+               </tr>
+               @endforeach
+              
+            </tbody>
+          </table>
+       </div>
+
+          <!-- Modal -->
+      <div class="modal fade" id="destroyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Remover recurso</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              Deseja realmente remover este recurso?
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+              <form id="destroyform" method="POST" action="">
+                @csrf
+                <input name="_method" type="hidden" value="DELETE">
+              <input type="submit" class="btn btn-danger" value="Confirmar">
+            </form>
+            </div>
+          </div>
         </div>
-        <div class="form-group">
-            <label for="input-bairro">bairro</label>
-            <input name="bairro" type="text" class="form-control" id="input-bairro" placeholder="Informe o nome do recurso" value={{$Endereco->bairro}} >
-        </div>
-        <div class="form-group">
-            <label for="input-preco">Preço</label>
-            <input name="preco" type="text" class="form-control" id="input-preco" placeholder="Informe o preço do recurso" value={{$Endereco->logradouro}} >
-        </div>
-        <div class="form-group">
-            <label for="input-tipo-produto">Tipo de Produto</label>
-            <select id="input-tipo-produto" class="form-control" name="Tipo_Produtos_id">
-                @foreach ($tipoProdutos as $tipoProduto)
-                    @if ($tipoProduto->id == $produto->Tipo_Produtos_id)
-                        <option value={{$tipoProduto->id}} selected>{{$tipoProduto->descricao}}</option> 
-                    @else   
-                        <option value={{$tipoProduto->id}}>{{$tipoProduto->descricao}}</option> 
-                    @endif
-                @endforeach
-            </select>
-        </div>
-        <button type="submit" class="btn btn-primary">Enviar</button>
-        <a href={{route('produto.index')}} class="btn btn-primary">Voltar</a>
-    </form>
-</div>
+      </div>
+
+      <script>
+        const destroyButtons = document.querySelectorAll(".destroyButton");
+        const destroyform = document.querySelector("#destroyform");
+        destroyButtons.forEach(destroyButton => {
+          destroyButton.addEventListener('click', configureAction);
+        });
+        function configureAction(){
+          destroyform.setAttribute('action', this.getAttribute('value'));
+  
+        }
+      </script>
 
      <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
      <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
