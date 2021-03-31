@@ -3,11 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use DB;
-
 use App\Endereco;
-use App\Pedido;
-use Carbon\Carbon;
 
 class EnderecoController extends Controller
 {
@@ -18,11 +14,22 @@ class EnderecoController extends Controller
      */
     public function index()
     {
+        // Retorna a execução do método indexMessage
+        return $this->indexMessage(null);
+    }
+
+    /**
+     * Display a listing of the resource. With message message
+     *
+     * @return \Illuminate\Http\Response
+     */
+    private function indexMessage($message)
+    {
+        // Pega o usuário logado
         $user_id = 1;
-        //Buscar os dados que estão na tabela Enderecos
-        $Enderecos = DB::select("SELECT enderecos.id,enderecos.bairro, enderecos.logradouro,
-        enderecos.numero,enderecos.complemento,enderecos.users_id FROM enderecos join users on enderecos.users_id = users.id where users_id = :user_id", ['user_id'=> $user_id]);
-        return view('Endereco.index')->with('Enderecos', $Enderecos);
+        // Buscar os dados que estão na tabela Produtos
+        $enderecos = Endereco::where('Users_id', $user_id)->get();
+        return view('Endereco.index')->with('enderecos', $enderecos)->with('message', $message);
     }
 
     /**
@@ -32,10 +39,7 @@ class EnderecoController extends Controller
      */
     public function create()
     {
-        $user_id = 2;
-    //Buscar os dados que estão na tabela Enderecos
-        $enderecos = DB::select("SELECT * FROM enderecos join users on enderecos.users_id = users.id where users_id = :user_id", ['user_id'=> $user_id]);
-        return view('Endereco.create')->with('enderecos', $enderecos);
+        return view('Endereco.create');
     }
 
     /**
@@ -46,20 +50,29 @@ class EnderecoController extends Controller
      */
     public function store(Request $request)
     {
-       
-       $endereco = new Endereco();
-       $endereco->bairro = $request->bairro;
-       $endereco->logradouro = $request->logradouro;
-       $endereco->numero = $request->numero;
-       $endereco->complemento = $request->complemento;
-       $endereco->Users_id = $request->Users_id;
-       $endereco->save();
-
-      //retornar a execução do método
-      return $this->index();
-       
-       
-
+        // Pega o id do usuário logado
+        $user_id = 1;
+        
+        $endereco = new Endereco();
+        $endereco->Users_id = $user_id;
+        $endereco->bairro = $request->bairro;
+        $endereco->logradouro = $request->logradouro;
+        $endereco->numero = $request->numero;
+        $endereco->complemento = $request->complemento;
+        try{
+            $endereco->save();
+        } catch (\Throwable $th) {
+            // Constrói a mensagem
+            $message['type'] = 'danger';
+            $message['message'] = "Problema ao salvar o endereço: " . $th->getMessage();
+            // Retorna a execução do método indexMessage
+            return $this->indexMessage($message);
+        }
+        // Constrói a mensagem
+        $message['type'] = 'success';
+        $message['message'] = 'Endereço cadastrado com sucesso';
+        // Retorna a execução do método indexMessage
+        return $this->indexMessage($message);
     }
 
     /**
@@ -70,14 +83,17 @@ class EnderecoController extends Controller
      */
     public function show($id)
     {
-       // buscar dados da tabela Enderecos
-       $endereco = Endereco::find($id);
-    
-        return view('Endereco.show')->with('endereco', $endereco);
-
-       
-     //# TODO
-        return 'Não encontrado';
+        // Buscar o dado que está na tabela Produtos
+        $endereco = Endereco::find($id);
+        if(isset($endereco))
+        {
+            return view('Endereco.show')->with('endereco', $endereco);
+        }
+        // Constrói a mensagem
+        $message['type'] = 'danger';
+        $message['message'] = 'Endereço não encontrado';
+        // Retorna a execução do método indexMessage
+        return $this->indexMessage($message);
     }
 
     /**
@@ -88,11 +104,17 @@ class EnderecoController extends Controller
      */
     public function edit($id)
     {
+        // Buscar os dados que estão na tabela Tipo_Produtos
         $endereco = Endereco::find($id);
         if(isset($endereco))
-         return view('Endereco.edit')->with('endereco', $endereco);
-      //# TODO
-         return 'Não encontrado';
+        {
+            return view('Endereco.edit')->with('endereco', $endereco);
+        }
+        // Constrói a mensagem
+        $message['type'] = 'danger';
+        $message['message'] = 'Endereco não encontrado.';
+        // Retorna a execução do método indexMessage
+        return $this->indexMessage($message);
     }
 
     /**
@@ -104,6 +126,7 @@ class EnderecoController extends Controller
      */
     public function update(Request $request, $id)
     {
+        // Buscar os dados que estão na tabela Endereco
         $endereco = Endereco::find($id);
         if(isset($endereco))
         {
@@ -111,15 +134,26 @@ class EnderecoController extends Controller
             $endereco->logradouro = $request->logradouro;
             $endereco->numero = $request->numero;
             $endereco->complemento = $request->complemento;
-            $endereco->Users_id = $request->Users_id;
-            $endereco->update();
-
-            //retornar a execução do método
-            return $this->index();
-                }
-         
-            //# TODO
-            return 'Não encontrado';
+            try {
+                $endereco->update();
+            } catch (\Throwable $th) {
+                // Constrói a mensagem
+                $message['type'] = 'danger';
+                $message['message'] = "Problema ao atualizar o endereço: " . $th->getMessage();
+                // Retorna a execução do método indexMessage
+                return $this->indexMessage($message);
+            }
+            // Constrói a mensagem
+            $message['type'] = 'success';
+            $message['message'] = 'Endereço atualizado com sucesso';
+            // Retorna a execução do método indexMessage
+            return $this->indexMessage($message);
+        }
+        // Constrói a mensagem
+        $message['type'] = 'danger';
+        $message['message'] = 'Endereço não encontrado';
+        // Retorna a execução do método indexMessage
+        return $this->indexMessage($message);
     }
 
     /**
@@ -131,12 +165,27 @@ class EnderecoController extends Controller
     public function destroy($id)
     {
         $endereco = Endereco::find($id);
-        if(isset($endereco)){
-            $endereco->DELETE();
-            //retornar a execução do método
-            return $this->index();
+        if(isset($endereco))
+        {
+            try {
+                $endereco->delete();
+            } catch (\Throwable $th) {
+                // Constrói a mensagem
+                $message['type'] = 'danger';
+                $message['message'] = "Problema ao remover o endereço: " . $th->getMessage();
+                // Retorna a execução do método indexMessage
+                return $this->indexMessage($message);
+            }
+            // Constrói a mensagem
+            $message['type'] = 'success';
+            $message['message'] = 'Endereço removido com sucesso';
+            // Retorna a execução do método indexMessage
+            return $this->indexMessage($message);
         }
-
-        return " Não encontrado";
+        // Constrói a mensagem
+        $message['type'] = 'danger';
+        $message['message'] = 'Endereço não encontrado';
+        // Retorna a execução do método indexMessage
+        return $this->indexMessage($message);
     }
 }
