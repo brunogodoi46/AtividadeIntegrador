@@ -219,4 +219,67 @@ class PedidoController extends Controller
         $response['return'] = [];
         return response()->json($response, 404);
     }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function alterarEndereco(Request $request, $pedido_id, $endereco_id){
+        // Pego o id do usuário logado
+        $user_id = 1;
+        // Verificar se o pedido existe
+        $pedido = Pedido::find($pedido_id);
+        if(isset($pedido_id)) {
+            // Verificar se o pedido pertence ao usuário logado
+            if($pedido->Users_id == $user_id) {
+                // Verificar se o endereço pertence ao usuário
+                if($endereco_id != 'null') {
+                    // Verifico se o endereço existe e se pertence ao usuário logado
+                    $endereco = Endereco::find($endereco_id);
+                    if(isset($endereco) && $endereco->Users_id == $user_id) {
+                        $pedido->Enderecos_id = $endereco_id;
+                        try {
+                            $pedido->update();
+                        } catch (\Throwable $th) {
+                            $response['success'] = false;
+                            $response['message'] = "Não foi possível atualizar o pedido.";
+                            $response['return'] = [];
+                            return response()->json($response, 507);
+                        }
+                        $response['success'] = true;
+                        $response['message'] = "Endereço do pedido alterado com sucesso.";
+                        $response['return'] = $pedido;
+                        return response()->json($response, 201);
+                    }
+                    $response['success'] = false;
+                    $response['message'] = "Endereço não pertence ao usuário.";
+                    $response['return'] = [];
+                    return response()->json($response, 404);
+                }
+                $pedido->Enderecos_id = null;
+                try {
+                    $pedido->update();
+                } catch (\Throwable $th) {
+                    $response['success'] = false;
+                    $response['message'] = "Não foi possível atualizar o pedido.";
+                    $response['return'] = [];
+                    return response()->json($response, 507);
+                }
+                $response['success'] = true;
+                $response['message'] = "Endereço do pedido alterado com sucesso.";
+                $response['return'] = $pedido;
+                return response()->json($response, 201);
+            }
+            $response['success'] = false;
+            $response['message'] = "Pedido não pertence ao usuário.";
+            $response['return'] = [];
+            return response()->json($response, 404);
+        }
+        $response['success'] = false;
+        $response['message'] = "Pedido inválido.";
+        $response['return'] = [];
+        return response()->json($response, 404);
+    }
 }

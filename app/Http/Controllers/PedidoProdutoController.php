@@ -134,9 +134,28 @@ class PedidoProdutoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id_pedido, $id_produto)
     {
-        //
+        $pedidoProduto = PedidoProduto::where('Pedidos_id', $id_pedido)->where('Produtos_id', $id_produto)->first();
+        if(isset($pedidoProduto))
+        {
+            try {
+                $pedidoProduto->delete();
+            } catch (\Throwable $th) {
+                $response['success'] = false;
+                $response['message'] = "Erro ao remover produto dentro de pedido.";
+                $response['return'] = [];
+                return response()->json($response, 507);
+            }
+            $response['success'] = true;
+            $response['message'] = "O produto foi removido do pedido.";
+            $response['return'] = $pedidoProduto;
+            return response()->json($response, 200);
+        }
+        $response['success'] = false;
+        $response['message'] = "O produto do pedido não pode ser removido.";
+        $response['return'] = [];
+        return response()->json($response, 404);
     }
 
     /**
