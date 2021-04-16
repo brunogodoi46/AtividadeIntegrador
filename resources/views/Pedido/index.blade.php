@@ -86,7 +86,7 @@
                                     </option>
                                 @endif
                             @endforeach
-                            @if ($pedidos[0]->Enderecos_id == null)
+                            @if (isset($pedidos[0]) && $pedidos[0]->Enderecos_id == null)
                                 <option value=null selected>Retirar no local</option>
                             @else
                                 <option value=null>Retirar no local</option>

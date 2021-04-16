@@ -11,6 +11,9 @@ use App\PedidoProduto;
 
 class PedidoProdutoController extends Controller
 {
+    public function __construct(){
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -40,7 +43,7 @@ class PedidoProdutoController extends Controller
     public function store(Request $request, $id_pedido, $id_produto, $id_endereco, $quantidade)
     {
         // Pega o id do usuário logado
-        $user_id = 1;
+        $user_id = \Auth::user()->id;
         if(Pedido::find($id_pedido) && Produto::find($id_produto) && $quantidade && $quantidade > 0){
             // quando o endereço for diferente de nulo
             if($id_endereco != "null") {
@@ -187,7 +190,7 @@ class PedidoProdutoController extends Controller
      */
     public function getPedidoProdutosList($pedido_id){
         if(isset($pedido_id)){
-            $user_id = 1;
+            $user_id = \Auth::user()->id;
             $pedidosProdutos = null;
             $pedidosProdutos = DB::select("select Pedidos.id as pedido_id, 
                                                 Pedidos.status as pedido_status,

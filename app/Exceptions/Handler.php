@@ -52,4 +52,10 @@ class Handler extends ExceptionHandler
     {
         return parent::render($request, $exception);
     }
+
+   /* public function anauthentcated($request, \Illuminate\Auth\AuthenticationException $exception)
+    {
+        return redirect()->route('produto.index');
+        //return redirect()->route('login');
+    }*/
 }

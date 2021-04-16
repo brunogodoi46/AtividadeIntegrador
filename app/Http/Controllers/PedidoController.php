@@ -13,6 +13,11 @@ use Carbon\Carbon;
 
 class PedidoController extends Controller
 {
+
+    public function __construct(){
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -20,8 +25,11 @@ class PedidoController extends Controller
      */
     public function index()
     {
-        // #TODO selecionar id de usuário com base no que está logado.
-        $user_id = 1;
+
+
+
+       // selecionar id do usuário que está logado.
+        $user_id = \Auth::user()->id;
         // Buscar os dados que estão na tabela Pedidos
         $pedidos = Pedido::where('Users_id', $user_id)->orderBy('Pedidos.id', 'DESC')->get();
         // Buscar os dados que estão na tabela Tipo_Produtos
@@ -94,7 +102,7 @@ class PedidoController extends Controller
     public function store(Request $request, $endereco_id)
     {
         // Pega o id do usuário logado
-        $user_id = 1;
+        $user_id = \Auth::user()->id;
         // Verificar de o conteúdo da variável $endereco_id é nulo (se á variável foi definida)
         if( isset($endereco_id) && $endereco_id != 'null' ) {
             $endereco = Endereco::find($endereco_id);
@@ -228,7 +236,7 @@ class PedidoController extends Controller
      */
     public function alterarEndereco(Request $request, $pedido_id, $endereco_id){
         // Pego o id do usuário logado
-        $user_id = 1;
+        $user_id = \Auth::user()->id;
         // Verificar se o pedido existe
         $pedido = Pedido::find($pedido_id);
         if(isset($pedido_id)) {

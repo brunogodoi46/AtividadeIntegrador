@@ -33,3 +33,11 @@ Route::get('/pedidoproduto/getTodosProdutosDeTipo/{produto_id}', 'PedidoProdutoC
 Route::get('/pedidoproduto/getPedidoProdutosList/{pedido_id}', 'PedidoProdutoController@getPedidoProdutosList')->name('pedidoproduto.getPedidoProdutosList');
 Route::post('/pedidoproduto/{id_pedido}/{id_produto}/{id_endereco}/{quantidade}', 'PedidoProdutoController@store')->name('pedidoproduto.store');
 Route::delete('/pedidoproduto/{id_pedido}/{id_produto}', 'PedidoProdutoController@destroy')->name('pedidoproduto.destroy');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/usuario', function(){
+    return view('usuario');
+});
