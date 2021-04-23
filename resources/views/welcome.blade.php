@@ -9,40 +9,58 @@
     </head>
     <body>
         <div class="container">
-            <div class="text-white bg-light border p-5">
-                <div class="text-center p-5">
-
-
-                        @if (Auth::guard('admin')->check())
+            <div class="text-white bg-light border">
+                <div class="row p-5">                                                        
+                    @if (Auth::guard('admin')->check())
+                        @if (Route::has('login'))
+                        @auth                                                                          
+                            <div class="col-lg-4 my-1">
+                                <a href={{url('/admin/login')}} class="btn btn-lg btn-primary">Área de administrador</a>
+                            </div>
+                            <div class="col-lg-4 my-1">
+                                <a href={{url('login')}} class="btn btn-lg btn-primary">Área de usuário</a>
+                            </div>                                                
+                        @endauth                  
+                        @endif                    
+                    @endif
+                    
+                        @if (Auth::guard('admin')->check())                                   
+                            <div class="col-lg-4 my-1">
+                                <a href={{route('login')}} class="btn btn-lg btn-primary">Entrar como usuário</a>
+                            </div>
+                            <div class="col-lg-4 my-1">
+                                <a href={{route('register')}} class="btn btn-lg btn-primary">Cadastrar usuário</a>
+                            </div>
+                            <div class="col-lg-4 my-1">
+                                <a href={{url('/admin/login')}} class="btn btn-lg btn-primary">Área de administrador</a>                                           
+                            </div>
+                            
+                            
+                        @else
                             @if (Route::has('login'))
                             @auth
-                                <a href={{url('/admin/login')}} class="btn btn-lg btn-primary">Área de administrador</a>                                           
-                                <a href={{url('login')}} class="btn btn-lg btn-primary">Área de usuário</a>
-                            @endauth                  
-                            @endif
-                     
-                            @endif
-                    
-                                    @if (Auth::guard('admin')->check())
+                                <div class="col-lg-4 my-1">
+                                    <a href={{url('login')}} class="btn btn-lg btn-primary">Área de usuário</a> 
+                                </div>
+                                <div class="col-lg-4 my-1">
+                                    <a href={{url('/admin/login')}} class="btn btn-lg btn-primary">Entrar como administrador</a>
+                                </div>
+                            @else
+                                <div class="col-lg-4 my-1">
                                     <a href={{route('login')}} class="btn btn-lg btn-primary">Entrar como usuário</a>
+                                </div>
+                                <div class="col-lg-4 my-1">
+                                    <a href={{url('/admin/login')}} class="btn btn-lg btn-primary">Entrar como administrador</a>
+                                </div>
+                                <div class="col-lg-4 my-1">
                                     <a href={{route('register')}} class="btn btn-lg btn-primary">Cadastrar usuário</a>
-                                    <a href={{url('/admin/login')}} class="btn btn-lg btn-primary">Área de administrador</a>                                           
-                                @else
-                                    @if (Route::has('login'))
-                                    @auth
-                                        <a href={{url('login')}} class="btn btn-lg btn-primary">Área de usuário</a>
-                                        <a href={{url('/admin/login')}} class="btn btn-lg btn-primary">Entrar como administrador</a>
-                                    @else
-                                        <a href={{route('login')}} class="btn btn-lg btn-primary">Entrar como usuário</a>
-                                        <a href={{url('/admin/login')}} class="btn btn-lg btn-primary">Entrar como administrador</a>
-                                        <a href={{route('register')}} class="btn btn-lg btn-primary">Cadastrar usuário</a>
-                                    @endauth
-                                    @endif
-                                                    
+                                </div>
+
+                            @endauth
+                            @endif
                                             
                         @endif
 
-                    
                 </div>
             </div>
         </div>

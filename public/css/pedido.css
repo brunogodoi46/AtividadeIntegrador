@@ -23,3 +23,29 @@
 .ui-spinner {
     width: 100%;
 }
+
+#list-pedidosadm {
+    height: 410px;
+    overflow-y: scroll;
+}
+
+#list-produtosadm {
+    height: 355px;
+    overflow-y: scroll;
+}
+
+.icons-list-produtoadm {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: red;
+}
+
+.icons-list-produto-laps {
+    position: absolute;
+    right: 40px;
+    top: 50%;
+    transform: translateY(-50%);
+    
+}
